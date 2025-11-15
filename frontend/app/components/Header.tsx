@@ -28,10 +28,10 @@ export function Header() {
             <Link to="/">Dashboard</Link>
           </Button>
           <Button variant="ghost" size="sm" asChild>
-            <a href="#">Gallery</a>
+            <Link to="/gallery">Gallery</Link>
           </Button>
           <Button variant="ghost" size="sm" asChild>
-            <a href="#">About</a>
+            <Link to="/about">About</Link>
           </Button>
           <ConnectButton />
         </nav>
