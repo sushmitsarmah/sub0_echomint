@@ -1,6 +1,7 @@
 import type { Route } from "./+types/gallery";
 import { useState } from "react";
 import { Header } from "../components/Header";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
@@ -109,10 +110,11 @@ export default function Gallery() {
     : MOCK_NFTS.filter(nft => nft.coin === filter);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      <AnimatedBackground />
       <Header />
 
-      <main className="container mx-auto px-6 py-8 space-y-8">
+      <main className="container mx-auto px-6 py-8 space-y-8 relative z-10">
         {/* Header Section */}
         <section className="text-center space-y-4 py-8">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight">

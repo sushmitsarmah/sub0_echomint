@@ -1,5 +1,6 @@
 import type { Route } from "./+types/about";
 import { Header } from "../components/Header";
+import { AnimatedBackground } from "../components/AnimatedBackground";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
@@ -109,10 +110,11 @@ const TECH_STACK = [
 
 export default function About() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      <AnimatedBackground />
       <Header />
 
-      <main className="container mx-auto px-6 py-8 space-y-16">
+      <main className="container mx-auto px-6 py-8 space-y-16 relative z-10">
         {/* Hero Section */}
         <section className="text-center space-y-4 py-8">
           <Badge className="mb-2">Built for Polkadot Sub0 BA</Badge>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Header } from "./Header";
 import { NFTDisplay } from "./NFTDisplay";
 import { MarketMetrics } from "./MarketMetrics";
+import { AnimatedBackground } from "./AnimatedBackground";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
@@ -44,10 +45,11 @@ export function Dashboard() {
   const data = MOCK_DATA[selectedCoin];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      <AnimatedBackground />
       <Header />
 
-      <main className="container mx-auto px-6 py-8 space-y-8">
+      <main className="container mx-auto px-6 py-8 space-y-8 relative z-10">
         {/* Hero Section */}
         <section className="text-center space-y-4 py-8">
           <Badge className="mb-2">Powered by Arkiv × Hyperbridge × Kusama</Badge>
