@@ -3,12 +3,17 @@
 #[ink::contract]
 mod echomint_nft {
     use ink::prelude::string::String;
+    use ink::prelude::string::ToString;
     use ink::prelude::vec::Vec;
+    use ink::prelude::format;
     use ink::storage::Mapping;
 
     /// Represents the mood state of an NFT
     #[derive(Debug, Clone, PartialEq, Eq, scale::Encode, scale::Decode)]
-    #[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
+    #[cfg_attr(
+        feature = "std",
+        derive(scale_info::TypeInfo, ink::storage::traits::StorageLayout)
+    )]
     pub enum MoodState {
         Bullish,
         Bearish,
@@ -20,7 +25,10 @@ mod echomint_nft {
 
     /// NFT metadata structure
     #[derive(Debug, Clone, scale::Encode, scale::Decode)]
-    #[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
+    #[cfg_attr(
+        feature = "std",
+        derive(scale_info::TypeInfo, ink::storage::traits::StorageLayout)
+    )]
     pub struct NFTMetadata {
         pub name: String,
         pub coin: String,
@@ -62,6 +70,12 @@ mod echomint_nft {
     }
 
     pub type Result<T> = core::result::Result<T, Error>;
+
+    impl Default for EchoMintNFT {
+        fn default() -> Self {
+            Self::new()
+        }
+    }
 
     impl EchoMintNFT {
         /// Constructor that initializes the contract
@@ -106,9 +120,9 @@ mod echomint_nft {
             // Update owner's token list
             let owner_token_count = self.owned_tokens_count.get(to).unwrap_or(0);
             self.owned_tokens.insert((to, owner_token_count), &token_id);
-            self.owned_tokens_count.insert(to, &(owner_token_count + 1));
+            self.owned_tokens_count.insert(to, &owner_token_count.saturating_add(1));
 
-            self.total_supply += 1;
+            self.total_supply = self.total_supply.saturating_add(1);
 
             // Emit event
             self.env().emit_event(Transfer {
@@ -207,13 +221,13 @@ mod echomint_nft {
             // Update owner's token list
             let owner_token_count = self.owned_tokens_count.get(owner).unwrap_or(0);
             if owner_token_count > 0 {
-                self.owned_tokens_count.insert(owner, &(owner_token_count - 1));
+                self.owned_tokens_count.insert(owner, &owner_token_count.saturating_sub(1));
             }
 
             // Update new owner's token list
             let to_token_count = self.owned_tokens_count.get(to).unwrap_or(0);
             self.owned_tokens.insert((to, to_token_count), &token_id);
-            self.owned_tokens_count.insert(to, &(to_token_count + 1));
+            self.owned_tokens_count.insert(to, &to_token_count.saturating_add(1));
 
             // Transfer ownership
             self.token_owners.insert(token_id, &to);
