@@ -12,13 +12,13 @@ import "./app.css";
 
 import { LunoKitProvider } from '@luno-kit/ui'
 import { createConfig } from '@luno-kit/react'
-import { polkadot } from '@luno-kit/react/chains'
+import { polkadot, kusama, kusamaAssetHub, paseo, paseoAssetHub } from '@luno-kit/react/chains'
 import { polkadotjsConnector, subwalletConnector, talismanConnector } from '@luno-kit/react/connectors'
 import '@luno-kit/ui/styles.css'
 
 const config = createConfig({
   appName: 'My Polkadot App',
-  chains: [polkadot],
+  chains: [polkadot, kusama, kusamaAssetHub, paseo, paseoAssetHub],
   connectors: [polkadotjsConnector(), subwalletConnector(), talismanConnector()],
 })
 
