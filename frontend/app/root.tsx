@@ -10,6 +10,18 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 
+import { LunoKitProvider } from '@luno-kit/ui'
+import { createConfig } from '@luno-kit/react'
+import { polkadot } from '@luno-kit/react/chains'
+import { polkadotjsConnector, subwalletConnector, talismanConnector } from '@luno-kit/react/connectors'
+import '@luno-kit/ui/styles.css'
+
+const config = createConfig({
+  appName: 'My Polkadot App',
+  chains: [polkadot],
+  connectors: [polkadotjsConnector(), subwalletConnector(), talismanConnector()],
+})
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -42,7 +54,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return <LunoKitProvider config={config}>
+    <Outlet />
+  </LunoKitProvider>;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

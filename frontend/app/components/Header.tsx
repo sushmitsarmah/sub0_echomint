@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { Button } from "./ui/button";
+import { ConnectButton } from '@luno-kit/ui'
 
 export function Header() {
   return (
@@ -32,9 +33,7 @@ export function Header() {
           <Button variant="ghost" size="sm" asChild>
             <a href="#">About</a>
           </Button>
-          <Button size="default">
-            Connect Wallet
-          </Button>
+          <ConnectButton />
         </nav>
       </div>
     </header>
