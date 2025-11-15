@@ -9,8 +9,8 @@ export function Header() {
         {/* Logo and brand */}
         <Link to="/" className="flex items-center space-x-3 group">
           <div className="relative">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center transition-transform group-hover:scale-105">
-              <span className="text-2xl font-bold text-primary-foreground">E</span>
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105">
+              <img src="/logo.png"/>
             </div>
             <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary to-accent opacity-0 blur-md group-hover:opacity-50 transition-opacity" />
           </div>

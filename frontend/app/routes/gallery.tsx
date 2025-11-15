@@ -84,21 +84,21 @@ const MOCK_NFTS = [
 ];
 
 const MOOD_COLORS = {
-  Bullish: "bg-green-500/20 text-green-400 border-green-500/50",
-  Bearish: "bg-red-500/20 text-red-400 border-red-500/50",
-  Neutral: "bg-blue-500/20 text-blue-400 border-blue-500/50",
-  Volatile: "bg-yellow-500/20 text-yellow-400 border-yellow-500/50",
-  Positive: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50",
-  Negative: "bg-rose-500/20 text-rose-400 border-rose-500/50",
+  Bullish: "bg-yellow-700/20 text-yellow-500 border-yellow-600/50",
+  Bearish: "bg-orange-900/20 text-orange-600 border-orange-700/50",
+  Neutral: "bg-amber-800/20 text-amber-400 border-amber-700/50",
+  Volatile: "bg-yellow-600/20 text-yellow-400 border-yellow-500/50",
+  Positive: "bg-yellow-600/20 text-yellow-300 border-yellow-500/50",
+  Negative: "bg-red-900/20 text-red-700 border-red-800/50",
 };
 
 const MOOD_GLOWS = {
-  Bullish: "shadow-[0_0_30px_rgba(34,197,94,0.3)]",
-  Bearish: "shadow-[0_0_30px_rgba(239,68,68,0.3)]",
-  Neutral: "shadow-[0_0_30px_rgba(59,130,246,0.3)]",
-  Volatile: "shadow-[0_0_30px_rgba(234,179,8,0.3)]",
-  Positive: "shadow-[0_0_30px_rgba(16,185,129,0.3)]",
-  Negative: "shadow-[0_0_30px_rgba(244,63,94,0.3)]",
+  Bullish: "shadow-[0_0_30px_rgba(204,153,0,0.25)]",
+  Bearish: "shadow-[0_0_30px_rgba(153,51,0,0.25)]",
+  Neutral: "shadow-[0_0_30px_rgba(180,140,80,0.2)]",
+  Volatile: "shadow-[0_0_30px_rgba(234,179,8,0.25)]",
+  Positive: "shadow-[0_0_30px_rgba(234,200,50,0.25)]",
+  Negative: "shadow-[0_0_30px_rgba(120,40,20,0.25)]",
 };
 
 export default function Gallery() {

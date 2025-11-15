@@ -88,38 +88,49 @@ body {
 }
 
 .dark {
-  /* EchoMint Dark Theme - Customize these colors to change the entire app theme */
-  --background: oklch(0.12 0.01 280);
-  --foreground: oklch(0.95 0.01 280);
-  --card: oklch(0.18 0.015 280);
-  --card-foreground: oklch(0.95 0.01 280);
-  --popover: oklch(0.18 0.015 280);
-  --popover-foreground: oklch(0.95 0.01 280);
-  --primary: oklch(0.55 0.25 280);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.22 0.02 280);
-  --secondary-foreground: oklch(0.95 0.01 280);
-  --muted: oklch(0.22 0.02 280);
-  --muted-foreground: oklch(0.70 0.02 280);
-  --accent: oklch(0.65 0.25 320);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.60 0.25 25);
-  --border: oklch(0.30 0.02 280);
-  --input: oklch(0.22 0.02 280);
-  --ring: oklch(0.55 0.25 280);
-  --chart-1: oklch(0.75 0.20 130);
-  --chart-2: oklch(0.55 0.22 25);
-  --chart-3: oklch(0.75 0.23 60);
-  --chart-4: oklch(0.70 0.18 85);
-  --chart-5: oklch(0.65 0.20 250);
-  --sidebar: oklch(0.18 0.015 280);
-  --sidebar-foreground: oklch(0.95 0.01 280);
-  --sidebar-primary: oklch(0.55 0.25 280);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.22 0.02 280);
-  --sidebar-accent-foreground: oklch(0.95 0.01 280);
-  --sidebar-border: oklch(0.30 0.02 280);
-  --sidebar-ring: oklch(0.55 0.25 280);
+  /* EchoMint Vintage Sunset Theme - Warm, earthy tones inspired by sunsets */
+  /* Background: #36241C - Warm Dark Brown */
+  --background: oklch(0.15 0.03 30);
+  /* Primary Text: #F5F5DC - Creamy Beige */
+  --foreground: oklch(0.96 0.02 80);
+  /* Panel Background: #4A362D - Slightly Lighter Brown */
+  --card: oklch(0.24 0.04 30);
+  --card-foreground: oklch(0.96 0.02 80);
+  --popover: oklch(0.24 0.04 30);
+  --popover-foreground: oklch(0.96 0.02 80);
+  /* Accent: #CC9900 - Muted Gold/Ochre */
+  --primary: oklch(0.65 0.15 70);
+  --primary-foreground: oklch(0.15 0.03 30);
+  /* Secondary panels slightly darker */
+  --secondary: oklch(0.20 0.03 30);
+  --secondary-foreground: oklch(0.96 0.02 80);
+  --muted: oklch(0.20 0.03 30);
+  /* Secondary Text: #D2B48C - Muted Light Brown */
+  --muted-foreground: oklch(0.78 0.06 50);
+  /* Accent Gold */
+  --accent: oklch(0.65 0.15 70);
+  --accent-foreground: oklch(0.15 0.03 30);
+  /* Negative/Warning: #993300 - Burnt Sienna/Rust */
+  --destructive: oklch(0.45 0.15 35);
+  /* Borders - subtle warm brown */
+  --border: oklch(0.32 0.04 35);
+  --input: oklch(0.24 0.04 30);
+  --ring: oklch(0.65 0.15 70);
+  /* Chart colors - warm palette */
+  --chart-1: oklch(0.65 0.15 70); /* Gold */
+  --chart-2: oklch(0.45 0.15 35); /* Rust */
+  --chart-3: oklch(0.78 0.06 50); /* Light brown */
+  --chart-4: oklch(0.55 0.12 55); /* Warm mid-tone */
+  --chart-5: oklch(0.38 0.10 40); /* Dark rust */
+  /* Sidebar */
+  --sidebar: oklch(0.24 0.04 30);
+  --sidebar-foreground: oklch(0.96 0.02 80);
+  --sidebar-primary: oklch(0.65 0.15 70);
+  --sidebar-primary-foreground: oklch(0.15 0.03 30);
+  --sidebar-accent: oklch(0.20 0.03 30);
+  --sidebar-accent-foreground: oklch(0.96 0.02 80);
+  --sidebar-border: oklch(0.32 0.04 35);
+  --sidebar-ring: oklch(0.65 0.15 70);
 }
 
 @layer base {

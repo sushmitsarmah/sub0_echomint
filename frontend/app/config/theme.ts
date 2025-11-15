@@ -6,57 +6,57 @@
  */
 
 export const theme = {
-  // Brand colors - customize these to change the entire theme
+  // Brand colors - Vintage Sunset Theme
   colors: {
-    // Primary brand color (purple/violet for crypto/NFT feel)
+    // Primary brand color (Muted Gold/Ochre #CC9900)
     primary: {
-      DEFAULT: 'oklch(0.55 0.25 280)', // vibrant purple
-      foreground: 'oklch(0.98 0 0)', // almost white text
-      hover: 'oklch(0.48 0.28 280)', // darker purple on hover
+      DEFAULT: 'oklch(0.65 0.15 70)', // muted gold
+      foreground: 'oklch(0.15 0.03 30)', // dark brown text on gold
+      hover: 'oklch(0.58 0.16 70)', // slightly darker gold
     },
 
-    // Secondary/accent colors
+    // Secondary/accent colors (complementary rust tones)
     accent: {
-      DEFAULT: 'oklch(0.65 0.25 320)', // magenta/pink
-      foreground: 'oklch(0.98 0 0)',
-      muted: 'oklch(0.35 0.15 320)', // darker magenta
+      DEFAULT: 'oklch(0.65 0.15 70)', // gold accent
+      foreground: 'oklch(0.15 0.03 30)',
+      muted: 'oklch(0.55 0.12 55)', // muted warm tone
     },
 
-    // Background colors (dark theme)
+    // Background colors (Vintage Sunset theme)
     background: {
-      DEFAULT: 'oklch(0.12 0.01 280)', // very dark purple-tinted
-      elevated: 'oklch(0.18 0.015 280)', // slightly lighter for cards
-      hover: 'oklch(0.22 0.02 280)', // hover state
+      DEFAULT: 'oklch(0.15 0.03 30)', // #36241C warm dark brown
+      elevated: 'oklch(0.24 0.04 30)', // #4A362D slightly lighter brown
+      hover: 'oklch(0.28 0.05 32)', // hover state
     },
 
-    // Text colors
+    // Text colors (Vintage Sunset theme)
     text: {
-      primary: 'oklch(0.95 0.01 280)', // almost white with purple tint
-      secondary: 'oklch(0.70 0.02 280)', // muted text
-      tertiary: 'oklch(0.50 0.03 280)', // even more muted
+      primary: 'oklch(0.96 0.02 80)', // #F5F5DC creamy beige
+      secondary: 'oklch(0.78 0.06 50)', // #D2B48C muted light brown
+      tertiary: 'oklch(0.60 0.08 45)', // darker muted brown
     },
 
-    // Border colors
+    // Border colors (warm browns)
     border: {
-      DEFAULT: 'oklch(0.30 0.02 280)', // subtle borders
-      focus: 'oklch(0.55 0.25 280)', // primary color for focus
+      DEFAULT: 'oklch(0.32 0.04 35)', // subtle warm border
+      focus: 'oklch(0.65 0.15 70)', // gold for focus
     },
 
-    // Mood-specific colors (for mood indicators)
+    // Mood-specific colors (warm palette)
     mood: {
-      bullish: 'oklch(0.75 0.20 130)', // bright green
-      bearish: 'oklch(0.55 0.22 25)', // red/orange
-      neutral: 'oklch(0.70 0.08 250)', // calm blue-gray
-      volatile: 'oklch(0.75 0.23 60)', // yellow/orange (warning)
-      positiveSentiment: 'oklch(0.70 0.18 85)', // warm yellow-green
-      negativeSentiment: 'oklch(0.50 0.20 340)', // pink-red (corrupted)
+      bullish: 'oklch(0.72 0.14 75)', // warm golden-green (positive)
+      bearish: 'oklch(0.45 0.15 35)', // #993300 burnt sienna/rust
+      neutral: 'oklch(0.65 0.08 50)', // warm neutral beige
+      volatile: 'oklch(0.70 0.16 65)', // amber/orange (warning)
+      positiveSentiment: 'oklch(0.75 0.12 80)', // warm sunny yellow
+      negativeSentiment: 'oklch(0.40 0.15 30)', // deep rust (negative)
     },
 
-    // Status colors
-    success: 'oklch(0.70 0.20 140)', // green
-    error: 'oklch(0.60 0.25 25)', // red
-    warning: 'oklch(0.75 0.20 70)', // orange-yellow
-    info: 'oklch(0.65 0.20 250)', // blue
+    // Status colors (warm palette)
+    success: 'oklch(0.72 0.14 75)', // warm golden-green
+    error: 'oklch(0.45 0.15 35)', // burnt rust
+    warning: 'oklch(0.70 0.16 65)', // amber
+    info: 'oklch(0.65 0.15 70)', // gold
   },
 
   // Typography
@@ -94,13 +94,13 @@ export const theme = {
     full: '9999px',
   },
 
-  // Shadows (dark theme optimized)
+  // Shadows (warm theme optimized)
   shadows: {
-    sm: '0 1px 2px 0 rgb(0 0 0 / 0.5)',
-    md: '0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5)',
-    lg: '0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5)',
-    xl: '0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5)',
-    glow: '0 0 20px rgb(139 92 246 / 0.3)', // purple glow effect
+    sm: '0 1px 2px 0 rgb(0 0 0 / 0.6)',
+    md: '0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.6)',
+    lg: '0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.6)',
+    xl: '0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6)',
+    glow: '0 0 20px rgb(204 153 0 / 0.3)', // warm golden glow effect
   },
 
   // Animation durations
