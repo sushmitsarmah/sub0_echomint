@@ -3,7 +3,6 @@
 #[ink::contract]
 mod echomint_nft {
     use ink::prelude::string::String;
-    use ink::prelude::string::ToString;
     use ink::prelude::vec::Vec;
     use ink::prelude::format;
     use ink::storage::Mapping;
@@ -38,24 +37,26 @@ mod echomint_nft {
         pub last_updated: u64,
     }
 
+    use ink::primitives::H160;
+
     #[ink(storage)]
     pub struct EchoMintNFT {
         /// Total supply of NFTs
         total_supply: u64,
         /// Mapping from token ID to owner
-        token_owners: Mapping<u64, AccountId>,
+        token_owners: Mapping<u64, H160>,
         /// Mapping from owner to owned token IDs
-        owned_tokens: Mapping<(AccountId, u64), u64>,
+        owned_tokens: Mapping<(H160, u64), u64>,
         /// Mapping from owner to token count
-        owned_tokens_count: Mapping<AccountId, u64>,
+        owned_tokens_count: Mapping<H160, u64>,
         /// Mapping from token ID to metadata
         token_metadata: Mapping<u64, NFTMetadata>,
         /// Contract owner (can update moods via Hyperbridge)
-        owner: AccountId,
+        owner: H160,
         /// Mapping from token ID to approved address
-        token_approvals: Mapping<u64, AccountId>,
+        token_approvals: Mapping<u64, H160>,
         /// Mapping from owner to operator approvals
-        operator_approvals: Mapping<(AccountId, AccountId), bool>,
+        operator_approvals: Mapping<(H160, H160), bool>,
     }
 
     #[derive(Debug, PartialEq, Eq, scale::Encode, scale::Decode)]
@@ -95,7 +96,7 @@ mod echomint_nft {
 
         /// Mint a new NFT
         #[ink(message)]
-        pub fn mint(&mut self, to: AccountId, coin: String, initial_mood: MoodState) -> Result<u64> {
+        pub fn mint(&mut self, to: H160, coin: String, initial_mood: MoodState) -> Result<u64> {
             let token_id = self.total_supply;
 
             if self.token_owners.contains(token_id) {
@@ -185,7 +186,7 @@ mod echomint_nft {
 
         /// Get owner of a token
         #[ink(message)]
-        pub fn owner_of(&self, token_id: u64) -> Option<AccountId> {
+        pub fn owner_of(&self, token_id: u64) -> Option<H160> {
             self.token_owners.get(token_id)
         }
 
@@ -197,13 +198,13 @@ mod echomint_nft {
 
         /// Get balance of an owner
         #[ink(message)]
-        pub fn balance_of(&self, owner: AccountId) -> u64 {
+        pub fn balance_of(&self, owner: H160) -> u64 {
             self.owned_tokens_count.get(owner).unwrap_or(0)
         }
 
         /// Transfer NFT
         #[ink(message)]
-        pub fn transfer(&mut self, to: AccountId, token_id: u64) -> Result<()> {
+        pub fn transfer(&mut self, to: H160, token_id: u64) -> Result<()> {
             let caller = self.env().caller();
             let owner = self.owner_of(token_id).ok_or(Error::TokenNotFound)?;
 
@@ -211,7 +212,7 @@ mod echomint_nft {
                 return Err(Error::NotApproved);
             }
 
-            if to == AccountId::from([0u8; 32]) {
+            if to == H160::from([0u8; 20]) {
                 return Err(Error::TransferToZeroAddress);
             }
 
@@ -243,7 +244,7 @@ mod echomint_nft {
 
         /// Approve an address to transfer a specific token
         #[ink(message)]
-        pub fn approve(&mut self, to: AccountId, token_id: u64) -> Result<()> {
+        pub fn approve(&mut self, to: H160, token_id: u64) -> Result<()> {
             let caller = self.env().caller();
             let owner = self.owner_of(token_id).ok_or(Error::TokenNotFound)?;
 
@@ -264,7 +265,7 @@ mod echomint_nft {
 
         /// Set operator approval for all tokens
         #[ink(message)]
-        pub fn set_approval_for_all(&mut self, operator: AccountId, approved: bool) -> Result<()> {
+        pub fn set_approval_for_all(&mut self, operator: H160, approved: bool) -> Result<()> {
             let caller = self.env().caller();
             self.operator_approvals.insert((caller, operator), &approved);
 
@@ -279,18 +280,18 @@ mod echomint_nft {
 
         /// Get approved address for a token
         #[ink(message)]
-        pub fn get_approved(&self, token_id: u64) -> Option<AccountId> {
+        pub fn get_approved(&self, token_id: u64) -> Option<H160> {
             self.token_approvals.get(token_id)
         }
 
         /// Check if an operator is approved for all tokens of an owner
         #[ink(message)]
-        pub fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
+        pub fn is_approved_for_all(&self, owner: H160, operator: H160) -> bool {
             self.operator_approvals.get((owner, operator)).unwrap_or(false)
         }
 
         /// Helper function to check if caller is approved or owner
-        fn is_approved_or_owner(&self, caller: AccountId, token_id: u64) -> bool {
+        fn is_approved_or_owner(&self, caller: H160, token_id: u64) -> bool {
             let owner = match self.owner_of(token_id) {
                 Some(o) => o,
                 None => return false,
@@ -302,13 +303,13 @@ mod echomint_nft {
         }
 
         /// Helper function to check operator approval
-        fn is_operator_approved(&self, owner: AccountId, operator: AccountId) -> bool {
+        fn is_operator_approved(&self, owner: H160, operator: H160) -> bool {
             self.operator_approvals.get((owner, operator)).unwrap_or(false)
         }
 
         /// Get tokens owned by an address
         #[ink(message)]
-        pub fn tokens_of_owner(&self, owner: AccountId) -> Vec<u64> {
+        pub fn tokens_of_owner(&self, owner: H160) -> Vec<u64> {
             let count = self.balance_of(owner);
             let mut tokens = Vec::new();
 
@@ -326,9 +327,9 @@ mod echomint_nft {
     #[ink(event)]
     pub struct Transfer {
         #[ink(topic)]
-        from: Option<AccountId>,
+        from: Option<H160>,
         #[ink(topic)]
-        to: Option<AccountId>,
+        to: Option<H160>,
         #[ink(topic)]
         token_id: u64,
     }
@@ -336,9 +337,9 @@ mod echomint_nft {
     #[ink(event)]
     pub struct Approval {
         #[ink(topic)]
-        owner: AccountId,
+        owner: H160,
         #[ink(topic)]
-        approved: AccountId,
+        approved: H160,
         #[ink(topic)]
         token_id: u64,
     }
@@ -346,9 +347,9 @@ mod echomint_nft {
     #[ink(event)]
     pub struct ApprovalForAll {
         #[ink(topic)]
-        owner: AccountId,
+        owner: H160,
         #[ink(topic)]
-        operator: AccountId,
+        operator: H160,
         approved: bool,
     }
 
@@ -357,7 +358,7 @@ mod echomint_nft {
         #[ink(topic)]
         token_id: u64,
         #[ink(topic)]
-        owner: AccountId,
+        owner: H160,
         coin: String,
     }
 
