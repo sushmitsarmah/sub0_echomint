@@ -1,0 +1,2205 @@
+{
+  "source": {
+    "hash": "0xb7f900f7ea2e35db40f848e66ab65c9072c1356342ef0457ae6ae4a7574f35c9",
+    "language": "ink! 6.0.0-beta.1",
+    "compiler": "rustc 1.91.1",
+    "build_info": {
+      "rust_toolchain": "stable-aarch64-apple-darwin",
+      "cargo_contract_version": "6.0.0-beta.1",
+      "build_mode": "Release"
+    }
+  },
+  "contract": {
+    "name": "echomint_nft",
+    "version": "0.1.0",
+    "authors": [
+      "EchoMint Team"
+    ]
+  },
+  "image": null,
+  "version": 6,
+  "types": [
+    {
+      "id": 0,
+      "type": {
+        "def": {
+          "primitive": "u64"
+        }
+      }
+    },
+    {
+      "id": 1,
+      "type": {
+        "path": [
+          "primitive_types",
+          "H160"
+        ],
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 2,
+                "typeName": "[u8; 20]"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": {
+        "def": {
+          "array": {
+            "len": 20,
+            "type": 3
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": {
+        "def": {
+          "primitive": "u8"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": {
+        "path": [
+          "ink_storage",
+          "lazy",
+          "mapping",
+          "Mapping"
+        ],
+        "params": [
+          {
+            "name": "K",
+            "type": 0
+          },
+          {
+            "name": "V",
+            "type": 1
+          },
+          {
+            "name": "KeyType",
+            "type": 5
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ResolverKey"
+        ],
+        "params": [
+          {
+            "name": "L",
+            "type": 6
+          },
+          {
+            "name": "R",
+            "type": 7
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "AutoKey"
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ManualKey"
+        ],
+        "params": [
+          {
+            "name": "ParentKey",
+            "type": 8
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": {
+        "def": {
+          "tuple": []
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": {
+        "path": [
+          "ink_storage",
+          "lazy",
+          "mapping",
+          "Mapping"
+        ],
+        "params": [
+          {
+            "name": "K",
+            "type": 10
+          },
+          {
+            "name": "V",
+            "type": 0
+          },
+          {
+            "name": "KeyType",
+            "type": 11
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": {
+        "def": {
+          "tuple": [
+            1,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ResolverKey"
+        ],
+        "params": [
+          {
+            "name": "L",
+            "type": 6
+          },
+          {
+            "name": "R",
+            "type": 12
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ManualKey"
+        ],
+        "params": [
+          {
+            "name": "ParentKey",
+            "type": 8
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": {
+        "path": [
+          "ink_storage",
+          "lazy",
+          "mapping",
+          "Mapping"
+        ],
+        "params": [
+          {
+            "name": "K",
+            "type": 1
+          },
+          {
+            "name": "V",
+            "type": 0
+          },
+          {
+            "name": "KeyType",
+            "type": 14
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 14,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ResolverKey"
+        ],
+        "params": [
+          {
+            "name": "L",
+            "type": 6
+          },
+          {
+            "name": "R",
+            "type": 15
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ManualKey"
+        ],
+        "params": [
+          {
+            "name": "ParentKey",
+            "type": 8
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 16,
+      "type": {
+        "def": {
+          "primitive": "str"
+        }
+      }
+    },
+    {
+      "id": 17,
+      "type": {
+        "path": [
+          "ink_storage",
+          "lazy",
+          "mapping",
+          "Mapping"
+        ],
+        "params": [
+          {
+            "name": "K",
+            "type": 0
+          },
+          {
+            "name": "V",
+            "type": 18
+          },
+          {
+            "name": "KeyType",
+            "type": 20
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 18,
+      "type": {
+        "path": [
+          "echomint_nft",
+          "echomint_nft",
+          "NFTMetadata"
+        ],
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "name",
+                "type": 16,
+                "typeName": "String"
+              },
+              {
+                "name": "coin",
+                "type": 16,
+                "typeName": "String"
+              },
+              {
+                "name": "mood",
+                "type": 19,
+                "typeName": "MoodState"
+              },
+              {
+                "name": "image_url",
+                "type": 16,
+                "typeName": "String"
+              },
+              {
+                "name": "created_at",
+                "type": 0,
+                "typeName": "u64"
+              },
+              {
+                "name": "last_updated",
+                "type": 0,
+                "typeName": "u64"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 19,
+      "type": {
+        "path": [
+          "echomint_nft",
+          "echomint_nft",
+          "MoodState"
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "Bullish",
+                "index": 0
+              },
+              {
+                "name": "Bearish",
+                "index": 1
+              },
+              {
+                "name": "Neutral",
+                "index": 2
+              },
+              {
+                "name": "Volatile",
+                "index": 3
+              },
+              {
+                "name": "PositiveSentiment",
+                "index": 4
+              },
+              {
+                "name": "NegativeSentiment",
+                "index": 5
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ResolverKey"
+        ],
+        "params": [
+          {
+            "name": "L",
+            "type": 6
+          },
+          {
+            "name": "R",
+            "type": 21
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 21,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ManualKey"
+        ],
+        "params": [
+          {
+            "name": "ParentKey",
+            "type": 8
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 22,
+      "type": {
+        "path": [
+          "ink_storage",
+          "lazy",
+          "mapping",
+          "Mapping"
+        ],
+        "params": [
+          {
+            "name": "K",
+            "type": 0
+          },
+          {
+            "name": "V",
+            "type": 1
+          },
+          {
+            "name": "KeyType",
+            "type": 23
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 23,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ResolverKey"
+        ],
+        "params": [
+          {
+            "name": "L",
+            "type": 6
+          },
+          {
+            "name": "R",
+            "type": 24
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 24,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ManualKey"
+        ],
+        "params": [
+          {
+            "name": "ParentKey",
+            "type": 8
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 25,
+      "type": {
+        "def": {
+          "primitive": "bool"
+        }
+      }
+    },
+    {
+      "id": 26,
+      "type": {
+        "path": [
+          "ink_storage",
+          "lazy",
+          "mapping",
+          "Mapping"
+        ],
+        "params": [
+          {
+            "name": "K",
+            "type": 27
+          },
+          {
+            "name": "V",
+            "type": 25
+          },
+          {
+            "name": "KeyType",
+            "type": 28
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 27,
+      "type": {
+        "def": {
+          "tuple": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "id": 28,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ResolverKey"
+        ],
+        "params": [
+          {
+            "name": "L",
+            "type": 6
+          },
+          {
+            "name": "R",
+            "type": 29
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 29,
+      "type": {
+        "path": [
+          "ink_storage_traits",
+          "impls",
+          "ManualKey"
+        ],
+        "params": [
+          {
+            "name": "ParentKey",
+            "type": 8
+          }
+        ],
+        "def": {
+          "composite": {}
+        }
+      }
+    },
+    {
+      "id": 30,
+      "type": {
+        "path": [
+          "echomint_nft",
+          "echomint_nft",
+          "EchoMintNFT"
+        ],
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "name": "total_supply",
+                "type": 0,
+                "typeName": "<u64 as::ink::storage::traits::AutoStorableHint<::ink::storage\n::traits::ManualKey<509899186u32, ()>,>>::Type"
+              },
+              {
+                "name": "token_owners",
+                "type": 4,
+                "typeName": "<Mapping<u64, H160> as::ink::storage::traits::AutoStorableHint<\n::ink::storage::traits::ManualKey<142469471u32, ()>,>>::Type"
+              },
+              {
+                "name": "owned_tokens",
+                "type": 9,
+                "typeName": "<Mapping<(H160, u64), u64> as::ink::storage::traits::\nAutoStorableHint<::ink::storage::traits::ManualKey<2055388918u32,\n()>,>>::Type"
+              },
+              {
+                "name": "owned_tokens_count",
+                "type": 13,
+                "typeName": "<Mapping<H160, u64> as::ink::storage::traits::AutoStorableHint<\n::ink::storage::traits::ManualKey<1324555773u32, ()>,>>::Type"
+              },
+              {
+                "name": "token_metadata",
+                "type": 17,
+                "typeName": "<Mapping<u64, NFTMetadata> as::ink::storage::traits::\nAutoStorableHint<::ink::storage::traits::ManualKey<1981570236u32,\n()>,>>::Type"
+              },
+              {
+                "name": "owner",
+                "type": 1,
+                "typeName": "<H160 as::ink::storage::traits::AutoStorableHint<::ink::storage\n::traits::ManualKey<3443945926u32, ()>,>>::Type"
+              },
+              {
+                "name": "token_approvals",
+                "type": 22,
+                "typeName": "<Mapping<u64, H160> as::ink::storage::traits::AutoStorableHint<\n::ink::storage::traits::ManualKey<55537602u32, ()>,>>::Type"
+              },
+              {
+                "name": "operator_approvals",
+                "type": 26,
+                "typeName": "<Mapping<(H160, H160), bool> as::ink::storage::traits::\nAutoStorableHint<::ink::storage::traits::ManualKey<1837136044u32,\n()>,>>::Type"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 31,
+      "type": {
+        "path": [
+          "Result"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 8
+          },
+          {
+            "name": "E",
+            "type": 32
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "Ok",
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 0
+              },
+              {
+                "name": "Err",
+                "fields": [
+                  {
+                    "type": 32
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 32,
+      "type": {
+        "path": [
+          "ink_primitives",
+          "LangError"
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "CouldNotReadInput",
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 33,
+      "type": {
+        "path": [
+          "Result"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 34
+          },
+          {
+            "name": "E",
+            "type": 32
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "Ok",
+                "fields": [
+                  {
+                    "type": 34
+                  }
+                ],
+                "index": 0
+              },
+              {
+                "name": "Err",
+                "fields": [
+                  {
+                    "type": 32
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 34,
+      "type": {
+        "path": [
+          "Result"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 0
+          },
+          {
+            "name": "E",
+            "type": 35
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "Ok",
+                "fields": [
+                  {
+                    "type": 0
+                  }
+                ],
+                "index": 0
+              },
+              {
+                "name": "Err",
+                "fields": [
+                  {
+                    "type": 35
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 35,
+      "type": {
+        "path": [
+          "echomint_nft",
+          "echomint_nft",
+          "Error"
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "NotOwner",
+                "index": 0
+              },
+              {
+                "name": "NotApproved",
+                "index": 1
+              },
+              {
+                "name": "TokenNotFound",
+                "index": 2
+              },
+              {
+                "name": "TokenAlreadyExists",
+                "index": 3
+              },
+              {
+                "name": "NotAllowed",
+                "index": 4
+              },
+              {
+                "name": "TransferToZeroAddress",
+                "index": 5
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 36,
+      "type": {
+        "path": [
+          "Result"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 37
+          },
+          {
+            "name": "E",
+            "type": 32
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "Ok",
+                "fields": [
+                  {
+                    "type": 37
+                  }
+                ],
+                "index": 0
+              },
+              {
+                "name": "Err",
+                "fields": [
+                  {
+                    "type": 32
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 37,
+      "type": {
+        "path": [
+          "Result"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 8
+          },
+          {
+            "name": "E",
+            "type": 35
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "Ok",
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 0
+              },
+              {
+                "name": "Err",
+                "fields": [
+                  {
+                    "type": 35
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 38,
+      "type": {
+        "path": [
+          "Result"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 39
+          },
+          {
+            "name": "E",
+            "type": 32
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "Ok",
+                "fields": [
+                  {
+                    "type": 39
+                  }
+                ],
+                "index": 0
+              },
+              {
+                "name": "Err",
+                "fields": [
+                  {
+                    "type": 32
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 39,
+      "type": {
+        "path": [
+          "Option"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 18
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "None",
+                "index": 0
+              },
+              {
+                "name": "Some",
+                "fields": [
+                  {
+                    "type": 18
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 40,
+      "type": {
+        "path": [
+          "Result"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 41
+          },
+          {
+            "name": "E",
+            "type": 32
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "Ok",
+                "fields": [
+                  {
+                    "type": 41
+                  }
+                ],
+                "index": 0
+              },
+              {
+                "name": "Err",
+                "fields": [
+                  {
+                    "type": 32
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 41,
+      "type": {
+        "path": [
+          "Option"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 1
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "None",
+                "index": 0
+              },
+              {
+                "name": "Some",
+                "fields": [
+                  {
+                    "type": 1
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 42,
+      "type": {
+        "path": [
+          "Result"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 0
+          },
+          {
+            "name": "E",
+            "type": 32
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "Ok",
+                "fields": [
+                  {
+                    "type": 0
+                  }
+                ],
+                "index": 0
+              },
+              {
+                "name": "Err",
+                "fields": [
+                  {
+                    "type": 32
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 43,
+      "type": {
+        "path": [
+          "Result"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 25
+          },
+          {
+            "name": "E",
+            "type": 32
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "Ok",
+                "fields": [
+                  {
+                    "type": 25
+                  }
+                ],
+                "index": 0
+              },
+              {
+                "name": "Err",
+                "fields": [
+                  {
+                    "type": 32
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 44,
+      "type": {
+        "path": [
+          "Result"
+        ],
+        "params": [
+          {
+            "name": "T",
+            "type": 45
+          },
+          {
+            "name": "E",
+            "type": 32
+          }
+        ],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "name": "Ok",
+                "fields": [
+                  {
+                    "type": 45
+                  }
+                ],
+                "index": 0
+              },
+              {
+                "name": "Err",
+                "fields": [
+                  {
+                    "type": 32
+                  }
+                ],
+                "index": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 45,
+      "type": {
+        "def": {
+          "sequence": {
+            "type": 0
+          }
+        }
+      }
+    },
+    {
+      "id": 46,
+      "type": {
+        "path": [
+          "ink_primitives",
+          "types",
+          "AccountId"
+        ],
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 47,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 47,
+      "type": {
+        "def": {
+          "array": {
+            "len": 32,
+            "type": 3
+          }
+        }
+      }
+    },
+    {
+      "id": 48,
+      "type": {
+        "def": {
+          "primitive": "u128"
+        }
+      }
+    },
+    {
+      "id": 49,
+      "type": {
+        "path": [
+          "ink_primitives",
+          "types",
+          "Hash"
+        ],
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 47,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 50,
+      "type": {
+        "def": {
+          "primitive": "u32"
+        }
+      }
+    }
+  ],
+  "storage": {
+    "root": {
+      "root_key": "0x00000000",
+      "layout": {
+        "struct": {
+          "name": "EchoMintNFT",
+          "fields": [
+            {
+              "name": "total_supply",
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 0
+                }
+              }
+            },
+            {
+              "name": "token_owners",
+              "layout": {
+                "root": {
+                  "root_key": "0x5fe97d08",
+                  "layout": {
+                    "leaf": {
+                      "key": "0x5fe97d08",
+                      "ty": 1
+                    }
+                  },
+                  "ty": 4
+                }
+              }
+            },
+            {
+              "name": "owned_tokens",
+              "layout": {
+                "root": {
+                  "root_key": "0xf6be827a",
+                  "layout": {
+                    "leaf": {
+                      "key": "0xf6be827a",
+                      "ty": 0
+                    }
+                  },
+                  "ty": 9
+                }
+              }
+            },
+            {
+              "name": "owned_tokens_count",
+              "layout": {
+                "root": {
+                  "root_key": "0xfd1df34e",
+                  "layout": {
+                    "leaf": {
+                      "key": "0xfd1df34e",
+                      "ty": 0
+                    }
+                  },
+                  "ty": 13
+                }
+              }
+            },
+            {
+              "name": "token_metadata",
+              "layout": {
+                "root": {
+                  "root_key": "0xbc5c1c76",
+                  "layout": {
+                    "struct": {
+                      "name": "NFTMetadata",
+                      "fields": [
+                        {
+                          "name": "name",
+                          "layout": {
+                            "leaf": {
+                              "key": "0xbc5c1c76",
+                              "ty": 16
+                            }
+                          }
+                        },
+                        {
+                          "name": "coin",
+                          "layout": {
+                            "leaf": {
+                              "key": "0xbc5c1c76",
+                              "ty": 16
+                            }
+                          }
+                        },
+                        {
+                          "name": "mood",
+                          "layout": {
+                            "enum": {
+                              "name": "MoodState",
+                              "dispatchKey": "0xbc5c1c76",
+                              "variants": {
+                                "0": {
+                                  "name": "Bullish",
+                                  "fields": []
+                                },
+                                "1": {
+                                  "name": "Bearish",
+                                  "fields": []
+                                },
+                                "2": {
+                                  "name": "Neutral",
+                                  "fields": []
+                                },
+                                "3": {
+                                  "name": "Volatile",
+                                  "fields": []
+                                },
+                                "4": {
+                                  "name": "PositiveSentiment",
+                                  "fields": []
+                                },
+                                "5": {
+                                  "name": "NegativeSentiment",
+                                  "fields": []
+                                }
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "name": "image_url",
+                          "layout": {
+                            "leaf": {
+                              "key": "0xbc5c1c76",
+                              "ty": 16
+                            }
+                          }
+                        },
+                        {
+                          "name": "created_at",
+                          "layout": {
+                            "leaf": {
+                              "key": "0xbc5c1c76",
+                              "ty": 0
+                            }
+                          }
+                        },
+                        {
+                          "name": "last_updated",
+                          "layout": {
+                            "leaf": {
+                              "key": "0xbc5c1c76",
+                              "ty": 0
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "ty": 17
+                }
+              }
+            },
+            {
+              "name": "owner",
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 1
+                }
+              }
+            },
+            {
+              "name": "token_approvals",
+              "layout": {
+                "root": {
+                  "root_key": "0xc26f4f03",
+                  "layout": {
+                    "leaf": {
+                      "key": "0xc26f4f03",
+                      "ty": 1
+                    }
+                  },
+                  "ty": 22
+                }
+              }
+            },
+            {
+              "name": "operator_approvals",
+              "layout": {
+                "root": {
+                  "root_key": "0xac78806d",
+                  "layout": {
+                    "leaf": {
+                      "key": "0xac78806d",
+                      "ty": 25
+                    }
+                  },
+                  "ty": 26
+                }
+              }
+            }
+          ]
+        }
+      },
+      "ty": 30
+    }
+  },
+  "spec": {
+    "constructors": [
+      {
+        "label": "new",
+        "selector": "0x9bae9d5e",
+        "payable": false,
+        "args": [],
+        "returnType": {
+          "type": 31,
+          "displayName": [
+            "ink_primitives",
+            "ConstructorResult"
+          ]
+        },
+        "docs": [
+          "Constructor that initializes the contract"
+        ],
+        "default": false
+      }
+    ],
+    "messages": [
+      {
+        "label": "mint",
+        "selector": "0xcfdd9aa2",
+        "mutates": true,
+        "payable": false,
+        "args": [
+          {
+            "label": "to",
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            }
+          },
+          {
+            "label": "coin",
+            "type": {
+              "type": 16,
+              "displayName": [
+                "String"
+              ]
+            }
+          },
+          {
+            "label": "initial_mood",
+            "type": {
+              "type": 19,
+              "displayName": [
+                "MoodState"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 33,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Mint a new NFT"
+        ],
+        "default": false
+      },
+      {
+        "label": "update_mood",
+        "selector": "0xd8151eb6",
+        "mutates": true,
+        "payable": false,
+        "args": [
+          {
+            "label": "token_id",
+            "type": {
+              "type": 0,
+              "displayName": [
+                "u64"
+              ]
+            }
+          },
+          {
+            "label": "new_mood",
+            "type": {
+              "type": 19,
+              "displayName": [
+                "MoodState"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 36,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Update NFT mood state (only callable by contract owner via Hyperbridge)"
+        ],
+        "default": false
+      },
+      {
+        "label": "update_image",
+        "selector": "0x468b23d1",
+        "mutates": true,
+        "payable": false,
+        "args": [
+          {
+            "label": "token_id",
+            "type": {
+              "type": 0,
+              "displayName": [
+                "u64"
+              ]
+            }
+          },
+          {
+            "label": "new_image_url",
+            "type": {
+              "type": 16,
+              "displayName": [
+                "String"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 36,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Update NFT image URL (for AI-generated images)"
+        ],
+        "default": false
+      },
+      {
+        "label": "get_metadata",
+        "selector": "0x928198d3",
+        "mutates": false,
+        "payable": false,
+        "args": [
+          {
+            "label": "token_id",
+            "type": {
+              "type": 0,
+              "displayName": [
+                "u64"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 38,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Get NFT metadata"
+        ],
+        "default": false
+      },
+      {
+        "label": "owner_of",
+        "selector": "0x99720c1e",
+        "mutates": false,
+        "payable": false,
+        "args": [
+          {
+            "label": "token_id",
+            "type": {
+              "type": 0,
+              "displayName": [
+                "u64"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 40,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Get owner of a token"
+        ],
+        "default": false
+      },
+      {
+        "label": "total_supply",
+        "selector": "0xdb6375a8",
+        "mutates": false,
+        "payable": false,
+        "args": [],
+        "returnType": {
+          "type": 42,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Get total supply"
+        ],
+        "default": false
+      },
+      {
+        "label": "balance_of",
+        "selector": "0x0f755a56",
+        "mutates": false,
+        "payable": false,
+        "args": [
+          {
+            "label": "owner",
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 42,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Get balance of an owner"
+        ],
+        "default": false
+      },
+      {
+        "label": "transfer",
+        "selector": "0x84a15da1",
+        "mutates": true,
+        "payable": false,
+        "args": [
+          {
+            "label": "to",
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            }
+          },
+          {
+            "label": "token_id",
+            "type": {
+              "type": 0,
+              "displayName": [
+                "u64"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 36,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Transfer NFT"
+        ],
+        "default": false
+      },
+      {
+        "label": "approve",
+        "selector": "0x681266a0",
+        "mutates": true,
+        "payable": false,
+        "args": [
+          {
+            "label": "to",
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            }
+          },
+          {
+            "label": "token_id",
+            "type": {
+              "type": 0,
+              "displayName": [
+                "u64"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 36,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Approve an address to transfer a specific token"
+        ],
+        "default": false
+      },
+      {
+        "label": "set_approval_for_all",
+        "selector": "0xcfd0c27b",
+        "mutates": true,
+        "payable": false,
+        "args": [
+          {
+            "label": "operator",
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            }
+          },
+          {
+            "label": "approved",
+            "type": {
+              "type": 25,
+              "displayName": [
+                "bool"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 36,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Set operator approval for all tokens"
+        ],
+        "default": false
+      },
+      {
+        "label": "get_approved",
+        "selector": "0x27592dea",
+        "mutates": false,
+        "payable": false,
+        "args": [
+          {
+            "label": "token_id",
+            "type": {
+              "type": 0,
+              "displayName": [
+                "u64"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 40,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Get approved address for a token"
+        ],
+        "default": false
+      },
+      {
+        "label": "is_approved_for_all",
+        "selector": "0x0f5922e9",
+        "mutates": false,
+        "payable": false,
+        "args": [
+          {
+            "label": "owner",
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            }
+          },
+          {
+            "label": "operator",
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 43,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Check if an operator is approved for all tokens of an owner"
+        ],
+        "default": false
+      },
+      {
+        "label": "tokens_of_owner",
+        "selector": "0x2ce8d541",
+        "mutates": false,
+        "payable": false,
+        "args": [
+          {
+            "label": "owner",
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            }
+          }
+        ],
+        "returnType": {
+          "type": 44,
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ]
+        },
+        "docs": [
+          " Get tokens owned by an address"
+        ],
+        "default": false
+      }
+    ],
+    "events": [
+      {
+        "label": "ApprovalForAll",
+        "module_path": "echomint_nft::echomint_nft",
+        "signature_topic": "0x0c021d8f05572cd3c4d6e847020818d32d6b9cbd334c9159533c43879d0719a9",
+        "args": [
+          {
+            "label": "owner",
+            "indexed": true,
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            },
+            "docs": []
+          },
+          {
+            "label": "operator",
+            "indexed": true,
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            },
+            "docs": []
+          },
+          {
+            "label": "approved",
+            "indexed": false,
+            "type": {
+              "type": 25,
+              "displayName": [
+                "bool"
+              ]
+            },
+            "docs": []
+          }
+        ],
+        "docs": []
+      },
+      {
+        "label": "Minted",
+        "module_path": "echomint_nft::echomint_nft",
+        "signature_topic": "0x04543c1b65d89df4c16926d15bb65f3c3217a7b2dca3b9964ec3dd26f73336b9",
+        "args": [
+          {
+            "label": "token_id",
+            "indexed": true,
+            "type": {
+              "type": 0,
+              "displayName": [
+                "u64"
+              ]
+            },
+            "docs": []
+          },
+          {
+            "label": "owner",
+            "indexed": true,
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            },
+            "docs": []
+          },
+          {
+            "label": "coin",
+            "indexed": false,
+            "type": {
+              "type": 16,
+              "displayName": [
+                "String"
+              ]
+            },
+            "docs": []
+          }
+        ],
+        "docs": []
+      },
+      {
+        "label": "Approval",
+        "module_path": "echomint_nft::echomint_nft",
+        "signature_topic": "0x2c1cbfb7498fd87f475dc74eab6180fb9374785edc5b941ea62cb472b7352732",
+        "args": [
+          {
+            "label": "owner",
+            "indexed": true,
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            },
+            "docs": []
+          },
+          {
+            "label": "approved",
+            "indexed": true,
+            "type": {
+              "type": 1,
+              "displayName": [
+                "H160"
+              ]
+            },
+            "docs": []
+          },
+          {
+            "label": "token_id",
+            "indexed": true,
+            "type": {
+              "type": 0,
+              "displayName": [
+                "u64"
+              ]
+            },
+            "docs": []
+          }
+        ],
+        "docs": []
+      },
+      {
+        "label": "Transfer",
+        "module_path": "echomint_nft::echomint_nft",
+        "signature_topic": "0x5f6ceaaee3842a29bc3f817bb87d8b8dd917ddcd38ffe58dc731015c24d03a95",
+        "args": [
+          {
+            "label": "from",
+            "indexed": true,
+            "type": {
+              "type": 41,
+              "displayName": [
+                "Option"
+              ]
+            },
+            "docs": []
+          },
+          {
+            "label": "to",
+            "indexed": true,
+            "type": {
+              "type": 41,
+              "displayName": [
+                "Option"
+              ]
+            },
+            "docs": []
+          },
+          {
+            "label": "token_id",
+            "indexed": true,
+            "type": {
+              "type": 0,
+              "displayName": [
+                "u64"
+              ]
+            },
+            "docs": []
+          }
+        ],
+        "docs": [
+          "Events"
+        ]
+      },
+      {
+        "label": "MoodUpdated",
+        "module_path": "echomint_nft::echomint_nft",
+        "signature_topic": "0x7d56fb5060f30b76ae390d4eb179e83c48220e86955561e7db95909e9ee4a818",
+        "args": [
+          {
+            "label": "token_id",
+            "indexed": true,
+            "type": {
+              "type": 0,
+              "displayName": [
+                "u64"
+              ]
+            },
+            "docs": []
+          },
+          {
+            "label": "new_mood",
+            "indexed": false,
+            "type": {
+              "type": 19,
+              "displayName": [
+                "MoodState"
+              ]
+            },
+            "docs": []
+          }
+        ],
+        "docs": []
+      }
+    ],
+    "docs": [],
+    "lang_error": {
+      "type": 32,
+      "displayName": [
+        "ink",
+        "LangError"
+      ]
+    },
+    "environment": {
+      "accountId": {
+        "type": 46,
+        "displayName": [
+          "AccountId"
+        ]
+      },
+      "balance": {
+        "type": 48,
+        "displayName": [
+          "Balance"
+        ]
+      },
+      "hash": {
+        "type": 49,
+        "displayName": [
+          "Hash"
+        ]
+      },
+      "timestamp": {
+        "type": 0,
+        "displayName": [
+          "Timestamp"
+        ]
+      },
+      "blockNumber": {
+        "type": 50,
+        "displayName": [
+          "BlockNumber"
+        ]
+      },
+      "nativeToEthRatio": 100000000,
+      "trustBackedAssetsPrecompileIndex": 288,
+      "poolAssetsPrecompileIndex": 800,
+      "staticBufferSize": 16384
+    }
+  }
+}

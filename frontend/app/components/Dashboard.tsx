@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAccount } from "@luno-kit/react";
 import { Header } from "./Header";
 import { NFTDisplay } from "./NFTDisplay";
 import { MarketMetrics } from "./MarketMetrics";
@@ -8,94 +9,161 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/
 import { Badge } from "./ui/badge";
 import { fetchLatestMarketData, type MarketDataSnapshot } from "../lib/arkiv";
 import { prepareNFTForMinting } from "../lib/pinata";
+import { getContractService, MoodState } from "../lib/contract";
+import { formatAddress, accountIdToH160 } from "../lib/wallet";
 
-// Mock data - in production this would come from Arkiv via Hyperbridge
-const MOCK_DATA = {
-  SOL: {
-    price: 142.35,
-    priceChange24h: 5.2,
-    volatility: 3.8,
-    sentiment: "Positive",
-    sentimentScore: 0.72,
-    mood: "Bullish",
-    imageUrl: undefined,
-  },
-  DOT: {
-    price: 7.82,
-    priceChange24h: -2.1,
-    volatility: 4.2,
-    sentiment: "Neutral",
-    sentimentScore: 0.5,
-    mood: "Neutral",
-    imageUrl: undefined,
-  },
-  BTC: {
-    price: 43250.0,
-    priceChange24h: 1.8,
-    volatility: 2.3,
-    sentiment: "Positive",
-    sentimentScore: 0.65,
-    mood: "Bullish",
-    imageUrl: undefined,
-  },
-};
-
-type CoinType = keyof typeof MOCK_DATA;
+type CoinType = "SOL" | "DOT" | "BTC";
 
 export function Dashboard() {
   const [selectedCoin, setSelectedCoin] = useState<CoinType>("SOL");
   const [isMinting, setIsMinting] = useState(false);
   const [mintStatus, setMintStatus] = useState<string>("");
-  const data = MOCK_DATA[selectedCoin];
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | undefined>(undefined);
+  const [marketData, setMarketData] = useState<MarketDataSnapshot | null>(null);
+  const [isLoadingData, setIsLoadingData] = useState(false);
+
+  // Use LunoKit hooks to access wallet state
+  const { account } = useAccount();
+
+  /**
+   * Fetch market data from Arkiv when coin selection changes
+   */
+  useEffect(() => {
+    const loadMarketData = async () => {
+      setIsLoadingData(true);
+      try {
+        const data = await fetchLatestMarketData(selectedCoin);
+        if (data) {
+          setMarketData(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch market data:", error);
+      } finally {
+        setIsLoadingData(false);
+      }
+    };
+
+    loadMarketData();
+  }, [selectedCoin]);
+
+  /**
+   * Convert market data to mood state
+   */
+  const getMoodFromMarketData = (marketData: MarketDataSnapshot): MoodState => {
+    const priceChange = marketData.priceChangePercent24h;
+
+    if (priceChange > 5) return MoodState.Bullish;
+    if (priceChange < -5) return MoodState.Bearish;
+    if (Math.abs(priceChange) > 3) return MoodState.Volatile;
+    if (priceChange > 0) return MoodState.PositiveSentiment;
+    if (priceChange < 0) return MoodState.NegativeSentiment;
+    return MoodState.Neutral;
+  };
+
+  /**
+   * Get mood display string
+   */
+  const getMoodDisplay = (data: MarketDataSnapshot | null): string => {
+    if (!data) return "Loading...";
+    const mood = getMoodFromMarketData(data);
+
+    switch (mood) {
+      case MoodState.Bullish: return "Bullish";
+      case MoodState.Bearish: return "Bearish";
+      case MoodState.Volatile: return "Volatile";
+      case MoodState.PositiveSentiment: return "Positive";
+      case MoodState.NegativeSentiment: return "Negative";
+      case MoodState.Neutral: return "Neutral";
+      default: return "Neutral";
+    }
+  };
 
   /**
    * Handle NFT minting - Full pipeline:
-   * 1. Fetch latest price from Arkiv
-   * 2. Generate NFT image
-   * 3. Upload to IPFS via Pinata
-   * 4. Create and upload metadata
-   * 5. Mint NFT with metadata URI
+   * 1. Connect wallet if not connected
+   * 2. Fetch latest price from Arkiv
+   * 3. Generate NFT image
+   * 4. Upload to IPFS via Pinata
+   * 5. Create and upload metadata
+   * 6. Mint NFT on-chain with smart contract
    */
   const handleMint = async () => {
     try {
       setIsMinting(true);
 
-      // Step 1: Fetch market data from Arkiv
-      setMintStatus("📊 Fetching latest market data from Arkiv...");
-      const marketData = await fetchLatestMarketData(selectedCoin);
-
-      if (!marketData) {
-        setMintStatus("❌ Failed to fetch market data from Arkiv. Please try again.");
+      // Step 0: Check wallet connection
+      if (!account) {
+        setMintStatus("🔗 Please connect your wallet first using the button in the header...");
         setTimeout(() => setMintStatus(""), 3000);
         return;
       }
 
+      // Step 1: Use already-fetched market data
+      if (!marketData) {
+        setMintStatus("❌ Market data not available. Please wait for data to load.");
+        setTimeout(() => setMintStatus(""), 3000);
+        return;
+      }
+
+      setMintStatus("📊 Using latest market data from Arkiv...");
       console.log("📊 Market data for minting:", marketData);
       setMintStatus(`✅ Price: $${marketData.price.toFixed(2)} | Change: ${marketData.priceChangePercent24h > 0 ? '+' : ''}${marketData.priceChangePercent24h.toFixed(2)}%`);
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Step 2: Generate image and upload to IPFS
-      setMintStatus("🎨 Generating NFT image and uploading to IPFS...");
-      const { metadataURI, metadata } = await prepareNFTForMinting(selectedCoin, marketData);
+      setMintStatus("🎨 Generating AI image...");
+      const { metadataURI, metadata, imageUrl } = await prepareNFTForMinting(selectedCoin, marketData);
 
-      console.log("✅ NFT prepared:", { metadataURI, metadata });
+      // Update the displayed image
+      setGeneratedImageUrl(imageUrl);
+
+      console.log("✅ NFT prepared:", { metadataURI, metadata, imageUrl });
       setMintStatus(`✅ Uploaded to IPFS! Metadata URI: ${metadataURI}`);
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Step 3: Mint NFT on Kusama
-      setMintStatus("⛓️ Minting NFT on Kusama...");
+      // Step 3: Derive H160 address from AccountId
+      setMintStatus("🔍 Deriving H160 address from your account...");
 
-      // TODO: Call the actual NFT minting contract with metadataURI
-      // Example:
-      // const tx = await contract.mint(metadataURI);
-      // await tx.wait();
+      const h160Address = accountIdToH160(account.address);
 
-      // For now, simulate minting
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      if (!h160Address) {
+        setMintStatus("❌ Failed to derive H160 address. Please try again.");
+        setTimeout(() => setMintStatus(""), 3000);
+        return;
+      }
 
-      setMintStatus(`🎉 NFT minted successfully! Token: ${selectedCoin} | Mood: ${metadata.attributes.find(a => a.trait_type === 'Mood')?.value}`);
+      setMintStatus(`✅ H160 address: ${h160Address}`);
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      setTimeout(() => setMintStatus(""), 8000);
+      const contractService = getContractService();
+      const mood = getMoodFromMarketData(marketData);
+
+      // Step 4: Mint NFT on-chain
+      setMintStatus("⛓️ Minting NFT on blockchain...");
+
+      try {
+        const txHash = await contractService.mint(account, {
+          to: h160Address,
+          coin: selectedCoin,
+          mood: mood,
+        });
+
+        console.log('Mint transaction hash:', txHash);
+
+        setMintStatus(
+          `🎉 NFT minted successfully!\n` +
+          `Token: ${selectedCoin} | Mood: ${metadata.attributes.find(a => a.trait_type === 'Mood')?.value}\n` +
+          `Tx: ${txHash.slice(0, 10)}...`
+        );
+        setTimeout(() => setMintStatus(""), 10000);
+
+      } catch (contractError) {
+        console.error("Contract minting error:", contractError);
+        const errorMessage = contractError instanceof Error ? contractError.message : 'Unknown error';
+        setMintStatus(`❌ Minting transaction failed: ${errorMessage}`);
+        setTimeout(() => setMintStatus(""), 8000);
+        return;
+      }
 
     } catch (error) {
       console.error("Error during minting:", error);
@@ -130,13 +198,14 @@ export function Dashboard() {
 
         {/* Coin Selector */}
         <section className="flex justify-center gap-4">
-          {(Object.keys(MOCK_DATA) as CoinType[]).map((coin) => (
+          {(["SOL", "DOT", "BTC"] as CoinType[]).map((coin) => (
             <Button
               key={coin}
               variant={selectedCoin === coin ? "default" : "outline"}
               size="lg"
               onClick={() => setSelectedCoin(coin)}
               className="min-w-[100px]"
+              disabled={isLoadingData}
             >
               {coin}
             </Button>
@@ -145,14 +214,20 @@ export function Dashboard() {
 
         {/* Market Metrics */}
         <section>
-          <MarketMetrics
-            price={data.price}
-            priceChange24h={data.priceChange24h}
-            volatility={data.volatility}
-            sentiment={data.sentiment}
-            sentimentScore={data.sentimentScore}
-            mood={data.mood}
-          />
+          {marketData ? (
+            <MarketMetrics
+              price={marketData.price}
+              priceChange24h={marketData.priceChangePercent24h}
+              volatility={0} // TODO: Calculate from market data
+              sentiment={marketData.priceChangePercent24h > 0 ? "Positive" : marketData.priceChangePercent24h < 0 ? "Negative" : "Neutral"}
+              sentimentScore={Math.min(Math.abs(marketData.priceChangePercent24h) / 10, 1)}
+              mood={getMoodDisplay(marketData)}
+            />
+          ) : (
+            <div className="text-center p-8 text-muted-foreground">
+              {isLoadingData ? "Loading market data..." : "Failed to load market data"}
+            </div>
+          )}
         </section>
 
         {/* NFT Display and Info */}
@@ -161,8 +236,8 @@ export function Dashboard() {
           <div className="lg:col-span-2">
             <NFTDisplay
               coin={selectedCoin}
-              mood={data.mood}
-              imageUrl={data.imageUrl}
+              mood={getMoodDisplay(marketData)}
+              imageUrl={generatedImageUrl}
               tokenId="001"
             />
           </div>
@@ -214,12 +289,12 @@ export function Dashboard() {
                   className="w-full"
                   size="lg"
                   onClick={handleMint}
-                  disabled={isMinting}
+                  disabled={isMinting || !account || !marketData || isLoadingData}
                 >
-                  {isMinting ? "Minting..." : "Mint Now"}
+                  {isMinting ? "Minting..." : isLoadingData ? "Loading data..." : "Mint Now"}
                 </Button>
                 {mintStatus && (
-                  <div className="text-sm text-center p-2 rounded-md bg-muted">
+                  <div className="text-sm text-center p-2 rounded-md bg-muted whitespace-pre-line">
                     {mintStatus}
                   </div>
                 )}

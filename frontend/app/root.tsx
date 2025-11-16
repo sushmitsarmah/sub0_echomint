@@ -1,3 +1,6 @@
+// Load polyfills first
+import "./polyfills";
+
 import {
   isRouteErrorResponse,
   Links,
@@ -11,14 +14,31 @@ import type { Route } from "./+types/root";
 import "./app.css";
 
 import { LunoKitProvider } from '@luno-kit/ui'
+import { defineChain } from '@luno-kit/react/utils'
 import { createConfig } from '@luno-kit/react'
-import { polkadot, kusama, kusamaAssetHub, paseo, paseoAssetHub } from '@luno-kit/react/chains'
+import { paseo } from '@luno-kit/react/chains'
 import { polkadotjsConnector, subwalletConnector, talismanConnector } from '@luno-kit/react/connectors'
 import '@luno-kit/ui/styles.css'
 
+const passetHub = defineChain({
+  genesisHash: '0xfd974cf9eaf028f5e44b9fdd1949ab039c6cf9cc54449b0b60d71b042e79aeb6',
+  name: 'Paseo - Passet Hub',
+  nativeCurrency: {
+    name: 'PAS',
+    symbol: 'PAS',
+    decimals: 12,
+  },
+  rpcUrls: {
+    webSocket: ['wss://testnet-passet-hub.polkadot.io'],
+  },
+  ss58Format: 42,
+  testnet: true,
+  chainIconUrl: 'https://raw.githubusercontent.com/polkadot-js/apps/master/packages/apps-config/src/ui/logos/chains/paseo.svg',
+})
+
 const config = createConfig({
-  appName: 'My Polkadot App',
-  chains: [polkadot, kusama, kusamaAssetHub, paseo, paseoAssetHub],
+  appName: 'EchoMint',
+  chains: [passetHub],
   connectors: [polkadotjsConnector(), subwalletConnector(), talismanConnector()],
 })
 

@@ -32,8 +32,7 @@ export const NETWORKS: Record<string, NetworkConfig> = {
     chainId: 'passet-hub',
     nativeToken: 'PAS',
     description: 'Passet Hub (Parachain 1111) - Official ink! v6 testnet on Paseo - Recommended for Sub0 Hackathon',
-    // TODO: Add contract address after deployment
-    contractAddress: process.env.PASSET_CONTRACT_ADDRESS,
+    contractAddress: import.meta.env.VITE_PASSET_CONTRACT_ADDRESS,
   },
   rococo: {
     name: 'Rococo Contracts',
@@ -44,7 +43,7 @@ export const NETWORKS: Record<string, NetworkConfig> = {
     chainId: 'rococo-contracts',
     nativeToken: 'ROC',
     description: 'Rococo testnet for smart contracts',
-    contractAddress: process.env.ROCOCO_CONTRACT_ADDRESS,
+    contractAddress: import.meta.env.VITE_ROCOCO_CONTRACT_ADDRESS,
   },
   kusama: {
     name: 'Kusama',
@@ -54,7 +53,7 @@ export const NETWORKS: Record<string, NetworkConfig> = {
     chainId: 'kusama',
     nativeToken: 'KSM',
     description: 'Kusama production network',
-    contractAddress: process.env.KUSAMA_CONTRACT_ADDRESS,
+    contractAddress: import.meta.env.VITE_KUSAMA_CONTRACT_ADDRESS,
   },
 };
 
@@ -62,7 +61,7 @@ export const NETWORKS: Record<string, NetworkConfig> = {
  * Get the current network based on environment
  */
 export function getCurrentNetwork(): NetworkConfig {
-  const networkName = process.env.NETWORK || 'passet';
+  const networkName = import.meta.env.VITE_NETWORK || 'passet';
   return NETWORKS[networkName] || NETWORKS.passet;
 }
 
