@@ -12,15 +12,8 @@ EchoMint is a dynamic NFT platform built on Polkadot that creates "living" digit
 
 - **Demo:** [Coming Soon - Deployed on Vercel]
 - **Pitch Video:** [YouTube Link - To Be Added]
-- **Pitch Deck:** [Google Slides/PDF Link - To Be Added]
+- **Pitch Deck:** [Pitch Deck](https://docs.google.com/presentation/d/1XB5m_70E5a5EG0Hyl62MMb9jXLSnZMhtWWrXJW_h-AI/edit?usp=sharing)
 - **Contract Address:** `0x7790cd497f1D21759F00B83407E16B908319B9FC` (Passet Hub)
-
-## 👥 Team
-
-**Solo Developer - Full-Stack**
-- Smart Contract Development (ink! v6)
-- Frontend Development (React/Next.js)
-- Backend Integration (Arkiv, IPFS, Polkadot.js)
 
 ## 🌟 Features
 
