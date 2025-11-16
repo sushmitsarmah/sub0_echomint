@@ -6,6 +6,7 @@ import { AnimatedBackground } from "./AnimatedBackground";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
+import { fetchLatestMarketData, type MarketDataSnapshot } from "../lib/arkiv";
 
 // Mock data - in production this would come from Arkiv via Hyperbridge
 const MOCK_DATA = {
@@ -42,7 +43,48 @@ type CoinType = keyof typeof MOCK_DATA;
 
 export function Dashboard() {
   const [selectedCoin, setSelectedCoin] = useState<CoinType>("SOL");
+  const [isMinting, setIsMinting] = useState(false);
+  const [mintStatus, setMintStatus] = useState<string>("");
   const data = MOCK_DATA[selectedCoin];
+
+  /**
+   * Handle NFT minting - fetches latest price from Arkiv before minting
+   */
+  const handleMint = async () => {
+    try {
+      setIsMinting(true);
+      setMintStatus("Fetching latest market data from Arkiv...");
+
+      // Fetch the latest market data from Arkiv Network
+      const marketData = await fetchLatestMarketData(selectedCoin);
+
+      if (!marketData) {
+        setMintStatus("❌ Failed to fetch market data from Arkiv. Please try again.");
+        setTimeout(() => setMintStatus(""), 3000);
+        return;
+      }
+
+      // Log the market data we received
+      console.log("📊 Market data for minting:", marketData);
+
+      setMintStatus(`✅ Fetched ${selectedCoin} price: $${marketData.price.toFixed(2)}`);
+
+      // TODO: Call the actual NFT minting contract with the market data
+      // For now, just simulate minting
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      setMintStatus(`🎨 NFT minted with ${selectedCoin} at $${marketData.price.toFixed(2)}!`);
+
+      setTimeout(() => setMintStatus(""), 5000);
+
+    } catch (error) {
+      console.error("Error during minting:", error);
+      setMintStatus("❌ Minting failed. Please try again.");
+      setTimeout(() => setMintStatus(""), 3000);
+    } finally {
+      setIsMinting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -143,13 +185,23 @@ export function Dashboard() {
               <CardHeader>
                 <CardTitle>Mint Your NFT</CardTitle>
                 <CardDescription>
-                  Create your own market mood NFT
+                  Create your own {selectedCoin} market mood NFT
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <Button className="w-full" size="lg">
-                  Mint Now
+              <CardContent className="space-y-3">
+                <Button
+                  className="w-full"
+                  size="lg"
+                  onClick={handleMint}
+                  disabled={isMinting}
+                >
+                  {isMinting ? "Minting..." : "Mint Now"}
                 </Button>
+                {mintStatus && (
+                  <div className="text-sm text-center p-2 rounded-md bg-muted">
+                    {mintStatus}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>

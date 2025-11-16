@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@arkiv-network/sdk':
+        specifier: ^0.4.4
+        version: 0.4.5(typescript@5.9.3)
       '@luno-kit/react':
         specifier: ^0.0.10
         version: 0.0.10(@dedot/chaintypes@0.182.0(dedot@0.18.5(typescript@5.9.3)))(@tanstack/react-query@5.90.9(react@19.2.0))(@types/react@19.2.5)(dedot@0.18.5(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
@@ -92,6 +95,12 @@ packages:
 
   '@adraffy/ens-normalize@1.11.1':
     resolution: {integrity: sha512-nhCBV3quEgesuf7c7KYfperqSS14T8bYuvJ8PcLJp6znkZpFc0AuW4qBtr8eKVyPPe/8RSr7sglCWPU5eaxwKQ==}
+
+  '@arkiv-network/sdk@0.4.5':
+    resolution: {integrity: sha512-iIrxlO0q82t/PQcBO3ezAm1PK4QwFrcyxJjOZEVCPtURwAP9uHplCnfUGl2VfNqPWsO+qnRG9gUOSo8qiyDSOw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      typescript: ^5.0.0
 
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
@@ -1213,6 +1222,10 @@ packages:
 
   brace-expansion@2.0.2:
     resolution: {integrity: sha512-Jt0vHyM+jmUBqojB7E1NIYadt0vI0Qxjxd2TErW94wDz+E2LAm5vKMXXwg6ZZBTHPuUlDgQHKXvjGBdfcF1ZDQ==}
+
+  brotli-wasm@3.0.1:
+    resolution: {integrity: sha512-U3K72/JAi3jITpdhZBqzSUq+DUY697tLxOuFXB+FpAE/Ug+5C3VZrv4uA674EUZHxNAuQ9wETXNqQkxZD6oL4A==}
+    engines: {node: '>=v18.0.0'}
 
   browserslist@4.28.0:
     resolution: {integrity: sha512-tbydkR/CxfMwelN0vwdP/pLkDwyAASZ+VfWm4EOwlB6SWhx1sYnWLqo8N5j0rAzPfzfRaxt0mM/4wPU/Su84RQ==}
@@ -2627,6 +2640,18 @@ packages:
 snapshots:
 
   '@adraffy/ens-normalize@1.11.1': {}
+
+  '@arkiv-network/sdk@0.4.5(typescript@5.9.3)':
+    dependencies:
+      brotli-wasm: 3.0.1
+      debug: 4.4.3
+      typescript: 5.9.3
+      viem: 2.39.0(typescript@5.9.3)
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+      - zod
 
   '@babel/code-frame@7.27.1':
     dependencies:
@@ -4055,6 +4080,8 @@ snapshots:
   brace-expansion@2.0.2:
     dependencies:
       balanced-match: 1.0.2
+
+  brotli-wasm@3.0.1: {}
 
   browserslist@4.28.0:
     dependencies:

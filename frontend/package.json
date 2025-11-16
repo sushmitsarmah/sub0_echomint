@@ -9,6 +9,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@arkiv-network/sdk": "^0.4.4",
     "@luno-kit/react": "^0.0.10",
     "@luno-kit/ui": "^0.0.10",
     "@radix-ui/react-slot": "^1.2.4",

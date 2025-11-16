@@ -19,6 +19,15 @@ export interface MarketDataSnapshot {
   timestamp: number;
 }
 
+export type TxType = {
+  txHash: string;
+  createdEntities: string[];
+  updatedEntities: any[];
+  deletedEntities: any[];
+  extendedEntities: any[];
+  ownershipChanges: any[];
+}
+
 /**
  * Market Data Indexer with Arkiv Network Storage
  * Fetches crypto prices from CoinGecko and stores snapshots on Arkiv
@@ -189,14 +198,14 @@ export class MarketDataIndexer {
       }));
 
       // Sign and send transaction to Arkiv
-      const tx = await this.walletClient.mutateEntities({
+      const tx: TxType = await this.walletClient.mutateEntities({
         creates: entities,
         updates: [],
       });
 
       // Transaction is already prepared and sent by walletClient.mutateEntities
       console.log(`✅ Successfully sent ${entities.length} entities to Arkiv Network`);
-      console.log(`   Transaction hash: ${tx}`);
+      console.log(`   Transaction hash: ${tx.txHash}`);
       console.log(`   Expires in: ${this.expirationSeconds}s (${this.expirationSeconds / 3600}h)`);
 
     } catch (error) {
