@@ -12,6 +12,7 @@
     "@arkiv-network/sdk": "^0.4.4",
     "@luno-kit/react": "^0.0.10",
     "@luno-kit/ui": "^0.0.10",
+    "@pinata/sdk": "^2.1.0",
     "@radix-ui/react-slot": "^1.2.4",
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",

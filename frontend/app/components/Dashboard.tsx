@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { fetchLatestMarketData, type MarketDataSnapshot } from "../lib/arkiv";
+import { prepareNFTForMinting } from "../lib/pinata";
 
 // Mock data - in production this would come from Arkiv via Hyperbridge
 const MOCK_DATA = {
@@ -48,14 +49,19 @@ export function Dashboard() {
   const data = MOCK_DATA[selectedCoin];
 
   /**
-   * Handle NFT minting - fetches latest price from Arkiv before minting
+   * Handle NFT minting - Full pipeline:
+   * 1. Fetch latest price from Arkiv
+   * 2. Generate NFT image
+   * 3. Upload to IPFS via Pinata
+   * 4. Create and upload metadata
+   * 5. Mint NFT with metadata URI
    */
   const handleMint = async () => {
     try {
       setIsMinting(true);
-      setMintStatus("Fetching latest market data from Arkiv...");
 
-      // Fetch the latest market data from Arkiv Network
+      // Step 1: Fetch market data from Arkiv
+      setMintStatus("📊 Fetching latest market data from Arkiv...");
       const marketData = await fetchLatestMarketData(selectedCoin);
 
       if (!marketData) {
@@ -64,23 +70,38 @@ export function Dashboard() {
         return;
       }
 
-      // Log the market data we received
       console.log("📊 Market data for minting:", marketData);
+      setMintStatus(`✅ Price: $${marketData.price.toFixed(2)} | Change: ${marketData.priceChangePercent24h > 0 ? '+' : ''}${marketData.priceChangePercent24h.toFixed(2)}%`);
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      setMintStatus(`✅ Fetched ${selectedCoin} price: $${marketData.price.toFixed(2)}`);
+      // Step 2: Generate image and upload to IPFS
+      setMintStatus("🎨 Generating NFT image and uploading to IPFS...");
+      const { metadataURI, metadata } = await prepareNFTForMinting(selectedCoin, marketData);
 
-      // TODO: Call the actual NFT minting contract with the market data
-      // For now, just simulate minting
+      console.log("✅ NFT prepared:", { metadataURI, metadata });
+      setMintStatus(`✅ Uploaded to IPFS! Metadata URI: ${metadataURI}`);
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Step 3: Mint NFT on Kusama
+      setMintStatus("⛓️ Minting NFT on Kusama...");
+
+      // TODO: Call the actual NFT minting contract with metadataURI
+      // Example:
+      // const tx = await contract.mint(metadataURI);
+      // await tx.wait();
+
+      // For now, simulate minting
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      setMintStatus(`🎨 NFT minted with ${selectedCoin} at $${marketData.price.toFixed(2)}!`);
+      setMintStatus(`🎉 NFT minted successfully! Token: ${selectedCoin} | Mood: ${metadata.attributes.find(a => a.trait_type === 'Mood')?.value}`);
 
-      setTimeout(() => setMintStatus(""), 5000);
+      setTimeout(() => setMintStatus(""), 8000);
 
     } catch (error) {
       console.error("Error during minting:", error);
-      setMintStatus("❌ Minting failed. Please try again.");
-      setTimeout(() => setMintStatus(""), 3000);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setMintStatus(`❌ Minting failed: ${errorMessage}`);
+      setTimeout(() => setMintStatus(""), 5000);
     } finally {
       setIsMinting(false);
     }
