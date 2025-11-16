@@ -1,9 +1,13 @@
 import axios from 'axios';
+import { createWalletClient, http } from '@arkiv-network/sdk';
+import { mendoza } from '@arkiv-network/sdk/chains';
+import { privateKeyToAccount } from '@arkiv-network/sdk/accounts';
+import { ExpirationTime, jsonToPayload } from '@arkiv-network/sdk/utils';
 
 /**
- * Market data for a specific asset
+ * Market data snapshot stored in Arkiv
  */
-export interface MarketData {
+export interface MarketDataSnapshot {
   symbol: string;
   price: number;
   volume24h: number;
@@ -11,48 +15,62 @@ export interface MarketData {
   priceChangePercent24h: number;
   high24h: number;
   low24h: number;
+  marketCap: number;
   timestamp: number;
 }
 
 /**
- * Price point for volatility calculation
- */
-interface PricePoint {
-  price: number;
-  timestamp: number;
-}
-
-/**
- * Market Data Indexer
- * Tracks real-time price, volume, and volatility for SOL, DOT, BTC
+ * Market Data Indexer with Arkiv Network Storage
+ * Fetches crypto prices from CoinGecko and stores snapshots on Arkiv
  */
 export class MarketDataIndexer {
-  private priceHistory: Map<string, PricePoint[]> = new Map();
-  private readonly HISTORY_LIMIT = 100; // Keep last 100 data points
-  private readonly UPDATE_INTERVAL = 60000; // 1 minute
+  private walletClient: any;
+  private account: any;
   private updateTimer?: NodeJS.Timeout;
+  private readonly symbols: string[];
+  private readonly expirationSeconds: number;
 
-  constructor(private readonly symbols: string[] = ['SOL', 'DOT', 'BTC']) {
-    // Initialize price history for each symbol
-    symbols.forEach(symbol => {
-      this.priceHistory.set(symbol, []);
+  constructor() {
+    // Load configuration from environment
+    const privateKey = process.env.PRIVATE_KEY;
+    if (!privateKey) {
+      throw new Error('PRIVATE_KEY not found in environment variables');
+    }
+
+    this.symbols = (process.env.TRACKED_SYMBOLS || 'SOL,DOT,BTC').split(',');
+    this.expirationSeconds = parseInt(process.env.DATA_EXPIRATION_SECONDS || '10800'); // 3 hours default
+
+    // Create account from private key
+    this.account = privateKeyToAccount(privateKey as `0x${string}`);
+
+    // Create Arkiv wallet client
+    this.walletClient = createWalletClient({
+      chain: mendoza,
+      transport: http(),
+      account: this.account,
     });
+
+    console.log(`📍 Arkiv Wallet Address: ${this.account.address}`);
+    console.log(`📊 Tracking symbols: ${this.symbols.join(', ')}`);
+    console.log(`⏰ Data expires after: ${this.expirationSeconds}s (${this.expirationSeconds / 3600}h)`);
   }
 
   /**
-   * Start indexing market data
+   * Start the indexer - fetch and store market data periodically
    */
   async start(): Promise<void> {
-    console.log('🚀 Starting Market Data Indexer...');
-    console.log(`📊 Tracking: ${this.symbols.join(', ')}`);
+    console.log('\n🚀 Starting Market Data Indexer with Arkiv Network...');
 
-    // Initial fetch
-    await this.fetchAllMarketData();
+    // Initial fetch and store
+    await this.fetchAndStoreMarketData();
 
     // Set up periodic updates
+    const intervalMinutes = parseInt(process.env.UPDATE_INTERVAL_MINUTES || '1');
     this.updateTimer = setInterval(async () => {
-      await this.fetchAllMarketData();
-    }, this.UPDATE_INTERVAL);
+      await this.fetchAndStoreMarketData();
+    }, intervalMinutes * 60 * 1000);
+
+    console.log(`⏰ Updates scheduled every ${intervalMinutes} minute(s)\n`);
   }
 
   /**
@@ -66,23 +84,47 @@ export class MarketDataIndexer {
   }
 
   /**
-   * Fetch market data for all symbols
+   * Fetch market data from CoinGecko and store to Arkiv Network
    */
-  private async fetchAllMarketData(): Promise<void> {
-    const promises = this.symbols.map(symbol => this.fetchMarketData(symbol));
-    await Promise.allSettled(promises);
+  private async fetchAndStoreMarketData(): Promise<void> {
+    console.log(`\n${'═'.repeat(60)}`);
+    console.log(`📊 Fetching Market Data - ${new Date().toISOString()}`);
+    console.log(`${'═'.repeat(60)}`);
+
+    try {
+      // Fetch market data for all symbols
+      const snapshots = await Promise.all(
+        this.symbols.map(symbol => this.fetchMarketDataForSymbol(symbol))
+      );
+
+      // Filter out null values (failed fetches)
+      const validSnapshots = snapshots.filter(s => s !== null) as MarketDataSnapshot[];
+
+      if (validSnapshots.length === 0) {
+        console.error('❌ No valid market data fetched');
+        return;
+      }
+
+      // Store all snapshots to Arkiv in a single transaction
+      await this.storeToArkiv(validSnapshots);
+
+    } catch (error) {
+      console.error('❌ Error in fetch and store cycle:', error);
+    }
   }
 
   /**
-   * Fetch market data for a specific symbol from CoinGecko API
+   * Fetch market data for a specific symbol from CoinGecko
    */
-  private async fetchMarketData(symbol: string): Promise<MarketData | null> {
+  private async fetchMarketDataForSymbol(symbol: string): Promise<MarketDataSnapshot | null> {
     try {
       // Map symbols to CoinGecko IDs
       const coinIds: Record<string, string> = {
         'SOL': 'solana',
         'DOT': 'polkadot',
         'BTC': 'bitcoin',
+        'ETH': 'ethereum',
+        'KSM': 'kusama',
       };
 
       const coinId = coinIds[symbol];
@@ -91,7 +133,7 @@ export class MarketDataIndexer {
         return null;
       }
 
-      // Fetch from CoinGecko
+      // Fetch from CoinGecko API
       const response = await axios.get(
         `https://api.coingecko.com/api/v3/coins/${coinId}`,
         {
@@ -106,23 +148,21 @@ export class MarketDataIndexer {
       );
 
       const data = response.data;
-      const marketData: MarketData = {
+      const snapshot: MarketDataSnapshot = {
         symbol,
         price: data.market_data.current_price.usd,
         volume24h: data.market_data.total_volume.usd,
-        priceChange24h: data.market_data.price_change_24h,
-        priceChangePercent24h: data.market_data.price_change_percentage_24h,
+        priceChange24h: data.market_data.price_change_24h || 0,
+        priceChangePercent24h: data.market_data.price_change_percentage_24h || 0,
         high24h: data.market_data.high_24h.usd,
         low24h: data.market_data.low_24h.usd,
+        marketCap: data.market_data.market_cap.usd,
         timestamp: Date.now(),
       };
 
-      // Store in price history
-      this.addPricePoint(symbol, marketData.price, marketData.timestamp);
+      console.log(`✅ ${symbol}: $${snapshot.price.toFixed(2)} (${snapshot.priceChangePercent24h > 0 ? '+' : ''}${snapshot.priceChangePercent24h.toFixed(2)}%)`);
 
-      console.log(`✅ ${symbol}: $${marketData.price.toFixed(2)} (${marketData.priceChangePercent24h.toFixed(2)}%)`);
-
-      return marketData;
+      return snapshot;
     } catch (error) {
       console.error(`❌ Error fetching ${symbol} data:`, error);
       return null;
@@ -130,106 +170,46 @@ export class MarketDataIndexer {
   }
 
   /**
-   * Add a price point to history
+   * Store market data snapshots to Arkiv Network
    */
-  private addPricePoint(symbol: string, price: number, timestamp: number): void {
-    const history = this.priceHistory.get(symbol) || [];
+  private async storeToArkiv(snapshots: MarketDataSnapshot[]): Promise<void> {
+    console.log(`\n💾 Storing ${snapshots.length} snapshots to Arkiv Network...`);
 
-    history.push({ price, timestamp });
+    try {
+      // Create entities for each snapshot using Arkiv SDK helpers
+      const entities = snapshots.map(snapshot => ({
+        payload: jsonToPayload(snapshot),
+        contentType: 'application/json' as const,
+        expiresIn: ExpirationTime.fromSeconds(this.expirationSeconds),
+        attributes: [
+          { key: 'token', value: snapshot.symbol },
+          { key: 'type', value: 'market_snapshot' },
+          { key: 'timestamp', value: snapshot.timestamp.toString() },
+        ],
+      }));
 
-    // Keep only recent history
-    if (history.length > this.HISTORY_LIMIT) {
-      history.shift();
+      // Sign and send transaction to Arkiv
+      const tx = await this.walletClient.mutateEntities({
+        creates: entities,
+        updates: [],
+      });
+
+      // Transaction is already prepared and sent by walletClient.mutateEntities
+      console.log(`✅ Successfully sent ${entities.length} entities to Arkiv Network`);
+      console.log(`   Transaction hash: ${tx}`);
+      console.log(`   Expires in: ${this.expirationSeconds}s (${this.expirationSeconds / 3600}h)`);
+
+    } catch (error) {
+      console.error('❌ Error storing to Arkiv:', error);
+      throw error;
     }
-
-    this.priceHistory.set(symbol, history);
   }
 
   /**
-   * Calculate volatility for a symbol (standard deviation of returns)
+   * Get the wallet address being used
    */
-  calculateVolatility(symbol: string, periodMinutes: number = 60): number {
-    const history = this.priceHistory.get(symbol);
-    if (!history || history.length < 2) {
-      return 0;
-    }
-
-    const now = Date.now();
-    const cutoff = now - (periodMinutes * 60 * 1000);
-
-    // Filter to period
-    const periodData = history.filter(point => point.timestamp >= cutoff);
-    if (periodData.length < 2) {
-      return 0;
-    }
-
-    // Calculate returns
-    const returns: number[] = [];
-    for (let i = 1; i < periodData.length; i++) {
-      const returnValue = (periodData[i].price - periodData[i - 1].price) / periodData[i - 1].price;
-      returns.push(returnValue);
-    }
-
-    // Calculate standard deviation
-    const mean = returns.reduce((sum, val) => sum + val, 0) / returns.length;
-    const variance = returns.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / returns.length;
-    const stdDev = Math.sqrt(variance);
-
-    // Annualize volatility (assuming 365 days, 24 hours)
-    const periodsPerYear = (365 * 24 * 60) / periodMinutes;
-    const annualizedVolatility = stdDev * Math.sqrt(periodsPerYear);
-
-    return annualizedVolatility * 100; // Return as percentage
-  }
-
-  /**
-   * Get current market data for a symbol
-   */
-  async getCurrentData(symbol: string): Promise<MarketData | null> {
-    return this.fetchMarketData(symbol);
-  }
-
-  /**
-   * Get price history for a symbol
-   */
-  getPriceHistory(symbol: string): PricePoint[] {
-    return this.priceHistory.get(symbol) || [];
-  }
-
-  /**
-   * Calculate price momentum (rate of change)
-   */
-  calculateMomentum(symbol: string, periodMinutes: number = 60): number {
-    const history = this.priceHistory.get(symbol);
-    if (!history || history.length < 2) {
-      return 0;
-    }
-
-    const now = Date.now();
-    const cutoff = now - (periodMinutes * 60 * 1000);
-
-    const periodData = history.filter(point => point.timestamp >= cutoff);
-    if (periodData.length < 2) {
-      return 0;
-    }
-
-    const firstPrice = periodData[0].price;
-    const lastPrice = periodData[periodData.length - 1].price;
-
-    return ((lastPrice - firstPrice) / firstPrice) * 100; // Return as percentage
-  }
-
-  /**
-   * Get market summary for all symbols
-   */
-  async getMarketSummary(): Promise<Record<string, MarketData | null>> {
-    const summary: Record<string, MarketData | null> = {};
-
-    for (const symbol of this.symbols) {
-      summary[symbol] = await this.getCurrentData(symbol);
-    }
-
-    return summary;
+  getWalletAddress(): string {
+    return this.account.address;
   }
 }
 
