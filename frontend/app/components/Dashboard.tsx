@@ -110,12 +110,17 @@ export function Dashboard() {
       setMintStatus(`✅ Price: $${marketData.price.toFixed(2)} | Change: ${marketData.priceChangePercent24h > 0 ? '+' : ''}${marketData.priceChangePercent24h.toFixed(2)}%`);
       await new Promise(resolve => setTimeout(resolve, 1000));
 
+      // Step 2: Show sample image in container immediately
+      const sampleImages: Record<CoinType, string> = {
+        SOL: '/sol.png',
+        DOT: '/dot.png',
+        BTC: '/sol.png', // Fallback to sol.png for BTC
+      };
+      setGeneratedImageUrl(sampleImages[selectedCoin]);
+
       // Step 2: Generate image and upload to IPFS
       setMintStatus("🎨 Generating AI image...");
       const { metadataURI, metadata, imageUrl } = await prepareNFTForMinting(selectedCoin, marketData);
-
-      // Update the displayed image
-      setGeneratedImageUrl(imageUrl);
 
       console.log("✅ NFT prepared:", { metadataURI, metadata, imageUrl });
       setMintStatus(`✅ Uploaded to IPFS! Metadata URI: ${metadataURI}`);

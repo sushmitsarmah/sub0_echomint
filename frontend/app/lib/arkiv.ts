@@ -67,7 +67,7 @@ export async function fetchLatestMarketData(
       })
       .sort((a, b) => {
         const aTime = a.timestamp;
-        const bTime = a.timestamp;
+        const bTime = b.timestamp;
         return bTime - aTime;
       });
 
