@@ -1,0 +1,49 @@
+{
+  "networks": {
+    "local": {
+      "name": "Local Node",
+      "rpcUrl": "ws://127.0.0.1:9944",
+      "type": "development",
+      "explorer": "http://localhost:3000",
+      "description": "Local Substrate contracts node for development"
+    },
+    "passet": {
+      "name": "Passet Hub",
+      "rpcUrl": "wss://testnet-passet-hub.polkadot.io",
+      "type": "testnet",
+      "explorer": "https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fpasset-hub-paseo.ibp.network#/explorer",
+      "faucet": "https://faucet.polkadot.io/?parachain=1111",
+      "chainId": "passet-hub",
+      "nativeToken": "PAS",
+      "description": "Passet Hub (Parachain 1111 on Paseo) is the official ink! v6 testnet. Recommended for Sub0 Hackathon and testing before Kusama mainnet deployment.",
+      "features": ["contracts", "ink-v6", "pallet-revive"]
+    },
+    "rococo": {
+      "name": "Rococo Contracts",
+      "rpcUrl": "wss://rococo-contracts-rpc.polkadot.io",
+      "type": "testnet",
+      "explorer": "https://rococo.subscan.io",
+      "faucet": "https://paritytech.github.io/polkadot-testnet-faucet/",
+      "chainId": "rococo-contracts",
+      "nativeToken": "ROC",
+      "description": "Rococo is a Polkadot testnet for smart contracts",
+      "features": ["contracts"]
+    },
+    "kusama": {
+      "name": "Kusama (Production)",
+      "rpcUrl": "wss://kusama-rpc.polkadot.io",
+      "type": "mainnet",
+      "explorer": "https://kusama.subscan.io",
+      "chainId": "kusama",
+      "nativeToken": "KSM",
+      "description": "Kusama is a production network. Use Paseo for testing first.",
+      "warning": "⚠️ This is a production network with real value. Test thoroughly on Paseo first.",
+      "features": ["assets", "nfts"]
+    }
+  },
+  "recommended": {
+    "development": "local",
+    "testnet": "passet",
+    "production": "kusama"
+  }
+}
