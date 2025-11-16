@@ -1,6 +1,6 @@
 ## MILESTONE 2 PLAN: EchoMint
 
-**Team:** Solo Developer
+**Team:** EchoMint
 **Track:** [X] SHIP-A-TON [ ] IDEA-TON
 **Date:** November 16, 2025
 
