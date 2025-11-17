@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Arkiv Indexer - Tracks market data and stores in Arkiv Network
+  arkiv-indexer:
+    build:
+      context: ./arkiv-indexer
+      dockerfile: Dockerfile
+    container_name: echomint-arkiv-indexer
+    restart: unless-stopped
+    env_file:
+      - ./arkiv-indexer/.env
+    environment:
+      - NODE_ENV=production
+    networks:
+      - echomint-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend - React Router v7 application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: echomint-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    networks:
+      - echomint-network
+    depends_on:
+      arkiv-indexer:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  echomint-network:
+    driver: bridge
+
+volumes:
+  arkiv-data:
+    driver: local
